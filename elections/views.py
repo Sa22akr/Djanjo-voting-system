@@ -149,6 +149,7 @@ def results(request):
 
     if election and timezone.now() <= election.end_date:
         return render(request, "elections/error.html", {
+        "election": election,
         "message": "Results are not available until voting has closed."
     })
     for candidate in candidates:

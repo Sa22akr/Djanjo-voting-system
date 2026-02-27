@@ -51,6 +51,9 @@ class Profile(models.Model):
     blank=True
     )
 
+    photo = models.ImageField(upload_to='candidate_photos/', null=True, blank=True)
+
+
     def __str__(self):
         return f"{self.user.username} - {self.role}"
 

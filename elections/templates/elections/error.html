@@ -26,8 +26,15 @@
     margin-bottom: 20px;
 }
 
+.countdown {
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 15px;
+    color: #2563eb;
+}
+
 .primary-btn {
-    margin-top: 20px;
+    margin-top: 25px;
     padding: 12px 25px;
     background: linear-gradient(to right, #2563eb, #1d4ed8);
     color: white;
@@ -55,11 +62,44 @@
             Results will be published once voting has officially closed.
         </p>
 
+        <div class="countdown">
+            Time remaining:
+            <div id="timer"></div>
+        </div>
+
         <a href="{% url 'home' %}">
             <button class="primary-btn">Return Home</button>
         </a>
 
     </div>
 </section>
+
+<script>
+const endDate = new Date("{{ election.end_date|date:'Y-m-d H:i:s' }}").getTime();
+
+const timer = setInterval(function() {
+
+    const now = new Date().getTime();
+    const distance = endDate - now;
+
+    if (distance <= 0) {
+        clearInterval(timer);
+        document.getElementById("timer").innerHTML = "Voting has closed.";
+        return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("timer").innerHTML =
+        days + "d " +
+        hours + "h " +
+        minutes + "m " +
+        seconds + "s ";
+
+}, 1000);
+</script>
 
 {% endblock %}

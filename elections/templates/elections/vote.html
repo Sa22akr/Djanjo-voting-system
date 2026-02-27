@@ -4,18 +4,21 @@
 <style>
 :root {
     --bg: #f8fafc;
-    --card: white;
+    --card: #ffffff;
     --text: #1e293b;
+    --border: #e2e8f0;
+    --primary: #2563eb;
 }
 
 body.dark {
     --bg: #0f172a;
     --card: #1e293b;
     --text: #f1f5f9;
+    --border: #334155;
 }
 
 .vote-container {
-    min-height: 80vh;
+    min-height: 100vh;
     padding: 60px 20px;
     background: var(--bg);
     transition: 0.3s;
@@ -24,52 +27,119 @@ body.dark {
 .card {
     background: var(--card);
     padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.08);
     margin-bottom: 30px;
     color: var(--text);
     animation: fadeIn 0.4s ease-in-out;
+}
+
+h1 {
+    margin-bottom: 10px;
+}
+
+h2 {
+    margin-top: 30px;
+    margin-bottom: 15px;
 }
 
 .candidate-option {
     display:flex;
     align-items:center;
     gap:15px;
-    padding:12px;
-    border:1px solid #e2e8f0;
-    border-radius:12px;
-    margin-bottom:10px;
+    padding:14px;
+    border:1px solid var(--border);
+    border-radius:14px;
+    margin-bottom:12px;
     cursor:pointer;
-    transition:0.2s;
+    transition:all 0.2s ease;
+    background:transparent;
 }
 
 .candidate-option:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+.candidate-option input {
+    accent-color: var(--primary);
+    transform: scale(1.2);
+}
+
+.candidate-option.selected {
+    border:2px solid var(--primary);
+    background: rgba(37,99,235,0.08);
 }
 
 .candidate-photo {
-    width:45px;
-    height:45px;
+    width:50px;
+    height:50px;
     border-radius:50%;
     object-fit:cover;
+    border:2px solid var(--border);
 }
 
 .submit-btn {
     width:100%;
-    padding:14px;
+    padding:16px;
     border:none;
-    border-radius:10px;
+    border-radius:12px;
     font-size:16px;
     font-weight:600;
     background: linear-gradient(to right, #2563eb, #1d4ed8);
     color:white;
     cursor:pointer;
+    transition:0.2s;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37,99,235,0.3);
 }
 
 @keyframes fadeIn {
-    from {opacity:0; transform: translateY(10px);}
+    from {opacity:0; transform: translateY(15px);}
     to {opacity:1; transform: translateY(0);}
+}
+
+/* Modal */
+.modal {
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content {
+    background: var(--card);
+    color: var(--text);
+    padding:30px;
+    border-radius:16px;
+    width:90%;
+    max-width:400px;
+    text-align:center;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal button {
+    padding:10px 20px;
+    border-radius:8px;
+    border:none;
+    margin:5px;
+    cursor:pointer;
+}
+
+.confirm-btn {
+    background: var(--primary);
+    color:white;
+}
+
+.cancel-btn {
+    background:transparent;
+    border:1px solid var(--border);
+    color: var(--text);
 }
 
 /* Responsive */
@@ -82,11 +152,10 @@ body.dark {
 
 <div class="card">
     <h1>{{ election.name }}</h1>
-    <p>Voting closes: {{ election.end_date }}</p>
+    <p><strong>Voting closes:</strong> {{ election.end_date }}</p>
 </div>
 
 <div class="card">
-
 <form method="POST" id="voteForm">
     {% csrf_token %}
 
@@ -104,71 +173,51 @@ body.dark {
                     {% if candidate.photo %}
                         <img src="{{ candidate.photo.url }}" class="candidate-photo">
                     {% else %}
-                        <img src="https://via.placeholder.com/45" class="candidate-photo">
+                        <img src="https://via.placeholder.com/50" class="candidate-photo">
                     {% endif %}
 
                     <span>{{ candidate.user.username }}</span>
                 </label>
             {% endif %}
         {% endfor %}
-
-        <br>
     {% endfor %}
 
+    <br>
     <button type="button" class="submit-btn" onclick="openModal()">
         Submit Vote
     </button>
-
 </form>
 </div>
 
 </section>
 
-<!-- Confirmation Modal -->
-<div id="confirmModal" style="
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.5);
-justify-content:center;
-align-items:center;
-">
-
-<div style="
-background:white;
-padding:30px;
-border-radius:15px;
-width:90%;
-max-width:400px;
-text-align:center;
-">
-
-<h3>Confirm Your Vote</h3>
-<p>This action cannot be undone.</p>
-
-<button onclick="submitVote()" style="
-background:#2563eb;
-color:white;
-padding:10px 20px;
-border:none;
-border-radius:8px;
-margin-right:10px;
-">Confirm</button>
-
-<button onclick="closeModal()" style="
-padding:10px 20px;
-border:1px solid #ccc;
-border-radius:8px;
-">Cancel</button>
-
-</div>
+<!-- Modal -->
+<div id="confirmModal" class="modal">
+    <div class="modal-content">
+        <h3>Confirm Your Vote</h3>
+        <p>This action cannot be undone.</p>
+        <button class="confirm-btn" onclick="submitVote()">Confirm</button>
+        <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+    </div>
 </div>
 
 <script>
+// Highlight selected candidate
+document.querySelectorAll("input[type=radio]").forEach(radio => {
+    radio.addEventListener("change", function() {
+        document.querySelectorAll(".candidate-option").forEach(el => {
+            el.classList.remove("selected");
+        });
+        this.closest(".candidate-option").classList.add("selected");
+    });
+});
+
 function openModal() {
+    const checked = document.querySelector("input[type=radio]:checked");
+    if(!checked){
+        alert("Please select a candidate before submitting.");
+        return;
+    }
     document.getElementById("confirmModal").style.display = "flex";
 }
 
@@ -180,7 +229,7 @@ function submitVote() {
     document.getElementById("voteForm").submit();
 }
 
-/* Dark Mode Toggle */
+// Dark mode persistence
 if(localStorage.getItem("darkMode") === "true"){
     document.body.classList.add("dark");
 }
