@@ -1,10 +1,17 @@
+{% extends "base.html" %}
 
+{% block content %}
 <h2>Cast Your Vote</h2>
+
 <form method="post">
     {% csrf_token %}
     {% for candidate in candidates %}
-        <input type="radio" name="candidate" value="{{ candidate.id }}" required>
-        {{ candidate.name }}<br>
+        <div>
+            <input type="radio" name="candidate" value="{{ candidate.id }}" required>
+            {{ candidate.name }}
+        </div>
     {% endfor %}
-    <button type="submit">Vote</button>
+    <br>
+    <button type="submit">Submit Vote</button>
 </form>
+{% endblock %}

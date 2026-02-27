@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-text">
+        <h1>Secure digital elections for modern organizations</h1>
+        <p>
+            Conduct transparent and tamper-resistant elections using our
+            secure Django-based voting platform prototype.
+        </p>
+
+        {% if user.is_authenticated %}
+            <a href="/vote/"><button>Start Voting</button></a>
+        {% else %}
+            <a href="/accounts/login/"><button>Login to Vote</button></a>
+        {% endif %}
+    </div>
+
+    <div class="hero-image">
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Voting Illustration">
+    </div>
+</section>
+
+<section class="section section-grey">
+    <div class="wrapper">
+        <h2 class="section-title">
+            Powerful and easy-to-use voting software
+        </h2>
+
+        <div class="features-grid">
+
+            <div class="feature-card">
+                <h3>Guaranteed Elections</h3>
+                <p>
+                    Secure voting with enforced one-vote-per-user
+                    database constraints and server validation.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Simple & Secure</h3>
+                <p>
+                    Authenticated access, CSRF protection,
+                    and secure session handling.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Admin Oversight</h3>
+                <p>
+                    Centralised dashboard to manage candidates,
+                    users and monitor results.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <h3>Standards Compliant</h3>
+                <p>
+                    ORM-based queries preventing SQL injection
+                    and enforcing data integrity.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="section section-light">
+    <div class="wrapper">
+        <div style="display:flex; align-items:center; gap:60px;">
+
+            <div style="flex:1;">
+                <h2 style="font-size:38px; font-weight:700;">
+                    No downloads – All devices
+                </h2>
+
+                <p style="margin-top:20px; color:#6b7280; line-height:1.7;">
+                    Vote securely from mobile, tablet, or desktop.
+                    Fully browser-based. No installations required.
+                </p>
+            </div>
+
+            <div style="flex:1;">
+                <img src="https://cdn-icons-png.flaticon.com/512/3063/3063827.png" style="width:100%;">
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

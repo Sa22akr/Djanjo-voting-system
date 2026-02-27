@@ -25,3 +25,6 @@ def results(request):
         count = Vote.objects.filter(candidate=candidate).count()
         results.append((candidate.name, count))
     return render(request, 'elections/results.html', {'results': results})
+
+def home(request):
+    return render(request, "elections/home.html")
