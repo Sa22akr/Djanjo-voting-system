@@ -20,11 +20,26 @@ def vote(request):
 @login_required
 def results(request):
     candidates = Candidate.objects.all()
+    total_votes = Vote.objects.count()
+
     results = []
+
     for candidate in candidates:
-        count = Vote.objects.filter(candidate=candidate).count()
-        results.append((candidate.name, count))
-    return render(request, 'elections/results.html', {'results': results})
+        vote_count = Vote.objects.filter(candidate=candidate).count()
+        percentage = 0
+        if total_votes > 0:
+            percentage = int((vote_count / total_votes) * 100)
+
+        results.append({
+            "name": candidate.name,
+            "count": vote_count,
+            "percentage": percentage
+        })
+
+    return render(request, "elections/results.html", {
+        "results": results,
+        "total_votes": total_votes
+    })
 
 def home(request):
     return render(request, "elections/home.html")

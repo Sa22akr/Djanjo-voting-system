@@ -1,11 +1,52 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Election Results</h2>
+<section style="padding:100px 0;">
 
-<ul>
-    {% for name, count in results %}
-        <li>{{ name }} - {{ count }} votes</li>
-    {% endfor %}
-</ul>
+    <div style="
+        max-width:800px;
+        margin:0 auto;
+        background:white;
+        padding:60px;
+        border-radius:20px;
+        box-shadow:0 20px 40px rgba(0,0,0,0.05);
+    ">
+
+        <h2 style="font-size:32px; margin-bottom:10px;">
+            Election Results
+        </h2>
+
+        <p style="color:#6b7280; margin-bottom:40px;">
+            Total Votes Cast: <strong>{{ total_votes }}</strong>
+        </p>
+
+        {% for candidate in results %}
+            <div style="margin-bottom:30px;">
+
+                <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                    <strong>{{ candidate.name }}</strong>
+                    <span>{{ candidate.count }} votes ({{ candidate.percentage }}%)</span>
+                </div>
+
+                <div style="
+                    background:#e5e7eb;
+                    border-radius:10px;
+                    overflow:hidden;
+                    height:14px;
+                ">
+                    <div style="
+                        width:{{ candidate.percentage }}%;
+                        background:linear-gradient(to right, #22c55e, #2563eb);
+                        height:100%;
+                        transition:width 0.5s ease;
+                    ">
+                    </div>
+                </div>
+
+            </div>
+        {% endfor %}
+
+    </div>
+
+</section>
 {% endblock %}
