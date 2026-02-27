@@ -1,11 +1,62 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Login</h2>
+<section style="
+    min-height:80vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+">
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-</form>
+    <div style="
+        width:400px;
+        background:white;
+        padding:50px 40px;
+        border-radius:20px;
+        box-shadow:0 20px 40px rgba(0,0,0,0.08);
+    ">
+
+        <h2 style="
+            text-align:center;
+            margin-bottom:30px;
+            font-size:28px;
+        ">
+            Welcome Back
+        </h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div style="margin-bottom:20px;">
+                <label style="display:block; margin-bottom:6px; font-size:14px;">
+                    Username
+                </label>
+                <input type="text" name="username" required>
+            </div>
+
+            <div style="margin-bottom:30px;">
+                <label style="display:block; margin-bottom:6px; font-size:14px;">
+                    Password
+                </label>
+                <input type="password" name="password" required>
+            </div>
+
+            <button type="submit" style="
+                width:100%;
+                background:linear-gradient(to right, #22c55e, #2563eb);
+                border:none;
+                padding:12px;
+                border-radius:10px;
+                font-size:16px;
+                font-weight:600;
+                cursor:pointer;
+            ">
+                Login
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
 {% endblock %}

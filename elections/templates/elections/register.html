@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section style="min-height:80vh; display:flex; align-items:center; justify-content:center;">
+    <div style="width:450px; background:white; padding:50px; border-radius:20px; box-shadow:0 20px 40px rgba(0,0,0,0.08);">
+
+        <h2 style="text-align:center; margin-bottom:30px;">Create Account</h2>
+            {% if error %}
+    <div style="color:red; margin-bottom:15px;">
+        {{ error }}
+    </div>
+{% endif %}
+
+{% if form.errors %}
+    <div style="color:red; margin-bottom:15px;">
+        {{ form.errors }}
+    </div>
+{% endif %}
+        <form method="post">
+            {% csrf_token %}
+
+            {{ form.username.label_tag }}
+            {{ form.username }}
+
+            <br><br>
+
+            {{ form.password.label_tag }}
+            {{ form.password }}
+
+            <br><br>
+
+            {{ form.role.label_tag }}
+            {{ form.role }}
+
+            <br><br>
+
+            {{ form.candidate_key.label_tag }}
+            {{ form.candidate_key }}
+
+            <br><br>
+
+            <button type="submit" style="
+                width:100%;
+                background:linear-gradient(to right, #22c55e, #2563eb);
+                border:none;
+                padding:12px;
+                border-radius:10px;
+                font-size:16px;
+                font-weight:600;
+            ">
+                Register
+            </button>
+        </form>
+
+    </div>
+</section>
+
+{% endblock %}

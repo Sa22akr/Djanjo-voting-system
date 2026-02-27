@@ -2,7 +2,7 @@
 {% block content %}
 
 <style>
-.already-container {
+.locked-container {
     min-height: 80vh;
     display: flex;
     justify-content: center;
@@ -10,7 +10,7 @@
     background: #f8fafc;
 }
 
-.already-card {
+.locked-card {
     background: white;
     padding: 50px;
     border-radius: 20px;
@@ -21,10 +21,9 @@
     animation: fadeIn 0.4s ease-in-out;
 }
 
-.already-icon {
+.lock-icon {
     font-size: 50px;
     margin-bottom: 20px;
-    color: #2563eb;
 }
 
 .primary-btn {
@@ -39,37 +38,25 @@
     cursor: pointer;
 }
 
-.secondary-link {
-    display: block;
-    margin-top: 15px;
-    color: #2563eb;
-    text-decoration: none;
-    font-weight: 500;
-}
-
 @keyframes fadeIn {
     from {opacity: 0; transform: translateY(10px);}
     to {opacity: 1; transform: translateY(0);}
 }
 </style>
 
-<section class="already-container">
-    <div class="already-card">
+<section class="locked-container">
+    <div class="locked-card">
 
-        <div class="already-icon">🗳️</div>
+        <div class="lock-icon">🔒</div>
 
-        <h2>You have already voted.</h2>
+        <h2>Results Not Available Yet</h2>
 
         <p style="color:#64748b;">
-            Your vote has been securely recorded and cannot be changed.
+            Results will be published once voting has officially closed.
         </p>
 
-        <a href="{% url 'results' %}">
-            <button class="primary-btn">View Results</button>
-        </a>
-
-        <a href="{% url 'home' %}" class="secondary-link">
-            Return Home
+        <a href="{% url 'home' %}">
+            <button class="primary-btn">Return Home</button>
         </a>
 
     </div>

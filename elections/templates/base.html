@@ -21,31 +21,40 @@
     margin: 0 auto;
 }
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 8%;
-            background: white;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
+       nav {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 40px;
+    background:white;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
 
-        nav .logo {
-            font-size: 22px;
-            font-weight: bold;
-            color: #2563eb;
-        }
+.nav-links a {
+    margin-left:20px;
+    text-decoration:none;
+    color:#1f2937;
+    font-weight:500;
+}
 
-        nav a {
-            margin-left: 20px;
-            text-decoration: none;
-            color: #1f2937;
-            font-weight: 500;
-        }
+.nav-links a:hover {
+    color:#2563eb;
+}
 
-        nav a:hover {
-            color: #2563eb;
-        }
+.nav-btn {
+    background:none;
+    border:none;
+    color:#1f2937;
+    font-weight:500;
+    cursor:pointer;
+    margin-left:20px;
+}
+
+.logo {
+    font-size:22px;
+    font-weight:700;
+    color:#2563eb;
+}
 
         .hero {
             display: flex;
@@ -152,27 +161,54 @@
     color: #6b7280;
     line-height: 1.6;
 }
+
+input {
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid #d1d5db;
+    font-size:14px;
+    outline:none;
+    transition:0.2s;
+}
+
+input:focus {
+    border-color:#2563eb;
+    box-shadow:0 0 0 3px rgba(37,99,235,0.1);
+}
         }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo">SecureVote</div>
-    <div>
-        {% if user.is_authenticated %}
-            <a href="/">Vote</a>
-            <a href="/results/">Results</a>
+    <div class="logo">
+        <a href="{% url 'home' %}" style="text-decoration:none;color:#2563eb;">
+            SecureVote
+        </a>
+    </div>
 
-            <form action="/accounts/logout/" method="post" style="display:inline;">
+    <div class="nav-links">
+
+        {% if user.is_authenticated %}
+
+            <a href="{% url 'vote' %}">Vote</a>
+            <a href="{% url 'results' %}">Results</a>
+
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
                 {% csrf_token %}
-                <button type="submit" style="background:none;border:none;color:#1f2937;font-weight:500;cursor:pointer;">
+                <button type="submit" class="nav-btn">
                     Logout
                 </button>
             </form>
+
         {% else %}
-            <a href="/accounts/login/">Login</a>
+
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+
         {% endif %}
+
     </div>
 </nav>
 

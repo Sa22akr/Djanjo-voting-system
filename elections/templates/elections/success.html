@@ -2,7 +2,7 @@
 {% block content %}
 
 <style>
-.already-container {
+.success-container {
     min-height: 80vh;
     display: flex;
     justify-content: center;
@@ -10,7 +10,7 @@
     background: #f8fafc;
 }
 
-.already-card {
+.success-card {
     background: white;
     padding: 50px;
     border-radius: 20px;
@@ -21,14 +21,14 @@
     animation: fadeIn 0.4s ease-in-out;
 }
 
-.already-icon {
+.success-icon {
     font-size: 50px;
     margin-bottom: 20px;
-    color: #2563eb;
+    color: #22c55e;
 }
 
-.primary-btn {
-    margin-top: 20px;
+.success-btn {
+    margin-top: 25px;
     padding: 12px 25px;
     background: linear-gradient(to right, #2563eb, #1d4ed8);
     color: white;
@@ -39,37 +39,24 @@
     cursor: pointer;
 }
 
-.secondary-link {
-    display: block;
-    margin-top: 15px;
-    color: #2563eb;
-    text-decoration: none;
-    font-weight: 500;
-}
-
 @keyframes fadeIn {
     from {opacity: 0; transform: translateY(10px);}
     to {opacity: 1; transform: translateY(0);}
 }
 </style>
 
-<section class="already-container">
-    <div class="already-card">
+<section class="success-container">
+    <div class="success-card">
 
-        <div class="already-icon">🗳️</div>
+        <div class="success-icon">✔</div>
 
-        <h2>You have already voted.</h2>
-
+        <h2>Your vote has been submitted successfully.</h2>
         <p style="color:#64748b;">
-            Your vote has been securely recorded and cannot be changed.
+            Your vote is final and cannot be changed.
         </p>
 
-        <a href="{% url 'results' %}">
-            <button class="primary-btn">View Results</button>
-        </a>
-
-        <a href="{% url 'home' %}" class="secondary-link">
-            Return Home
+        <a href="{% url 'home' %}">
+            <button class="success-btn">Return Home</button>
         </a>
 
     </div>

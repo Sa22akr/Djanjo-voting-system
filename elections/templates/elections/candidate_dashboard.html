@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Candidate Dashboard</title>
+</head>
+<body>
+
+<h1>Welcome, {{ request.user.username }}</h1>
+
+<p>You are registered as a candidate for:</p>
+
+<h2>
+    {{ profile.position.title }}
+</h2>
+
+<p>
+    As a candidate, you are not eligible to vote in this election.
+</p>
+
+<br>
+
+<a href="{% url 'results' %}">
+    <button>View Results</button>
+</a>
+
+<br><br>
+
+<a href="{% url 'home' %}">Return Home</a>
+
+</body>
+</html>
