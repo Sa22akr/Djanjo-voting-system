@@ -1,0 +1,10 @@
+
+<h2>Cast Your Vote</h2>
+<form method="post">
+    {% csrf_token %}
+    {% for candidate in candidates %}
+        <input type="radio" name="candidate" value="{{ candidate.id }}" required>
+        {{ candidate.name }}<br>
+    {% endfor %}
+    <button type="submit">Vote</button>
+</form>

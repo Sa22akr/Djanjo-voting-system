@@ -1,0 +1,8 @@
+
+<h2>Election Results</h2>
+<ul>
+    {% for name, count in results %}
+        <li>{{ name }} - {{ count }} votes</li>
+    {% endfor %}
+</ul>
+<a href="/">Back</a>
