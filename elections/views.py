@@ -103,8 +103,8 @@ def vote(request):
     # Block candidates from voting
     if profile.role == "candidate":
         return render(request, "elections/candidate_dashboard.html", {
-        "profile": profile
-    })
+            "profile": profile
+        })
 
     # Prevent double voting
     if Vote.objects.filter(voter=request.user, election=election).exists():
@@ -114,6 +114,14 @@ def vote(request):
 
     positions = Position.objects.filter(election=election)
 
+    # Attach candidates to each position
+    for position in positions:
+        position.candidates = Profile.objects.filter(
+            role="candidate",
+            position=position
+        )
+
+    # Handle form submission
     if request.method == "POST":
         for position in positions:
             candidate_id = request.POST.get(f"position_{position.id}")
@@ -123,7 +131,10 @@ def vote(request):
                     "message": "You must select a candidate for every position."
                 })
 
-            candidate = Profile.objects.get(id=candidate_id, role="candidate")
+            candidate = Profile.objects.get(
+                id=candidate_id,
+                role="candidate"
+            )
 
             Vote.objects.create(
                 voter=request.user,
@@ -134,6 +145,7 @@ def vote(request):
 
         return render(request, "elections/success.html")
 
+    # GET request — show voting page
     return render(request, "elections/vote.html", {
         "election": election,
         "positions": positions
@@ -143,25 +155,27 @@ def vote(request):
 def results(request):
     candidates = Profile.objects.filter(role="candidate")
     total_votes = Vote.objects.count()
-
     results = []
+
     election = Election.objects.filter(is_active=True).first()
 
     if election and timezone.now() <= election.end_date:
         return render(request, "elections/error.html", {
-        "election": election,
-        "message": "Results are not available until voting has closed."
-    })
+            "election": election,
+            "message": "Results are not available until voting has closed."
+        })
+
     for candidate in candidates:
         vote_count = Vote.objects.filter(candidate=candidate).count()
+
         percentage = 0
         if total_votes > 0:
             percentage = int((vote_count / total_votes) * 100)
 
         results.append({
-            "name": candidate.user.username,
+            "profile": candidate,   # ✅ FIXED
             "count": vote_count,
-            "percentage": percentage
+            "percentage": percentage,
         })
 
     return render(request, "elections/results.html", {

@@ -162,8 +162,7 @@ h2 {
     {% for position in positions %}
         <h2>{{ position.title }}</h2>
 
-        {% for candidate in position.profile_set.all %}
-            {% if candidate.role == "candidate" %}
+        {% for candidate in position.candidates %}
                 <label class="candidate-option">
                     <input type="radio"
                            name="position_{{ position.id }}"
@@ -178,7 +177,6 @@ h2 {
 
                     <span>{{ candidate.user.username }}</span>
                 </label>
-            {% endif %}
         {% endfor %}
     {% endfor %}
 

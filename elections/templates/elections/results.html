@@ -1,52 +1,177 @@
 {% extends "base.html" %}
-
 {% block content %}
-<section style="padding:100px 0;">
 
-    <div style="
-        max-width:800px;
-        margin:0 auto;
-        background:white;
-        padding:60px;
-        border-radius:20px;
-        box-shadow:0 20px 40px rgba(0,0,0,0.05);
-    ">
+<style>
+.results-section {
+    padding: 100px 20px;
+    background: #f8fafc;
+}
 
-        <h2 style="font-size:32px; margin-bottom:10px;">
-            Election Results
-        </h2>
+.results-card {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    padding: 60px;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.06);
+}
 
-        <p style="color:#6b7280; margin-bottom:40px;">
-            Total Votes Cast: <strong>{{ total_votes }}</strong>
-        </p>
+.results-title {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.results-subtitle {
+    color: #6b7280;
+    margin-bottom: 50px;
+}
+
+.result-item {
+    margin-bottom: 35px;
+    padding: 20px;
+    border-radius: 16px;
+    transition: 0.3s ease;
+}
+
+.result-item.winner {
+    background: linear-gradient(135deg, #ecfdf5, #f0f9ff);
+    border: 2px solid #22c55e;
+}
+
+.result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.candidate-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.candidate-photo {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #e5e7eb;
+}
+
+.result-item.winner .candidate-photo {
+    border-color: #22c55e;
+}
+
+.vote-stats {
+    font-weight: 600;
+}
+
+.progress-bar {
+    background: #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 16px;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(to right, #22c55e, #2563eb);
+    transition: width 1.2s ease;
+}
+
+/* Winner badge */
+.winner-badge {
+    font-size: 14px;
+    background: #22c55e;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-left: 10px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .results-card {
+        padding: 30px;
+    }
+
+    .candidate-photo {
+        width: 45px;
+        height: 45px;
+    }
+}
+</style>
+
+<section class="results-section">
+
+<div class="results-card">
+
+    <h2 class="results-title">Election Results</h2>
+
+    <p class="results-subtitle">
+        Total Votes Cast: <strong>{{ total_votes }}</strong>
+    </p>
+
+    {% if results %}
 
         {% for candidate in results %}
-            <div style="margin-bottom:30px;">
+        <div class="result-item {% if candidate.percentage == results.0.percentage %}winner{% endif %}">
 
-                <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                    <strong>{{ candidate.name }}</strong>
-                    <span>{{ candidate.count }} votes ({{ candidate.percentage }}%)</span>
+            <div class="result-header">
+
+                <div class="candidate-info">
+                    {% if candidate.profile.photo %}
+    <img src="{{ candidate.profile.photo.url }}" class="candidate-photo">
+{% else %}
+    <p>NO PHOTO</p>
+{% endif %}
+
+                    <strong>
+                        {{ candidate.profile.user.username }}
+                        {% if candidate.percentage == results.0.percentage %}
+                            <span class="winner-badge">Winner</span>
+                        {% endif %}
+                    </strong>
                 </div>
 
-                <div style="
-                    background:#e5e7eb;
-                    border-radius:10px;
-                    overflow:hidden;
-                    height:14px;
-                ">
-                    <div style="
-                        width:{{ candidate.percentage }}%;
-                        background:linear-gradient(to right, #22c55e, #2563eb);
-                        height:100%;
-                        transition:width 0.5s ease;
-                    ">
-                    </div>
+                <div class="vote-stats">
+                    {{ candidate.count }} votes ({{ candidate.percentage }}%)
                 </div>
 
             </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill"
+                     data-percentage="{{ candidate.percentage|default:0 }}">
+                </div>
+            </div>
+
+        </div>
         {% endfor %}
 
-    </div>
+    {% else %}
+        <p>No results available.</p>
+    {% endif %}
+
+</div>
 
 </section>
+
+<script>
+// Animate bars from 0% after load
+document.addEventListener("DOMContentLoaded", function () {
+    const bars = document.querySelectorAll(".progress-fill");
+
+    bars.forEach(bar => {
+        const percentage = bar.getAttribute("data-percentage");
+
+        setTimeout(() => {
+            bar.style.width = percentage + "%";
+        }, 300);
+    });
+});
+</script>
+
 {% endblock %}
